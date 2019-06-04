@@ -13,6 +13,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * 用户信息表
+ * 
+ * @author lyz
+ *
+ */
 @Entity
 @Table(name = "user_info")
 public class UserInfo {
