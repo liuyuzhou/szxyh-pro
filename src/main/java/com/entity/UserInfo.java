@@ -21,52 +21,53 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 @Entity
 @Table(name = "user_info")
+@org.hibernate.annotations.Table(appliesTo = "user_info", comment = "用户信息")
 public class UserInfo {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(nullable = false, name = "real_name", length = 20)
+	@Column(nullable = false, name = "real_name", columnDefinition = "varchar(50) COMMENT '真实姓名'")
 	private String realName;
-	@Column(nullable = false, length = 4)
+	@Column(nullable = false, columnDefinition = "tinyint(1) COMMENT '性别'")
 	private Integer sex;
-	@Column(nullable = false, name = "phone_num", length = 11)
+	@Column(nullable = false, name = "phone_num", columnDefinition = "int(11) COMMENT '手机号'")
 	private Long phoneNum;
-	@Column(nullable = false, name = "entrance_time")
+	@Column(nullable = false, name = "entrance_time", columnDefinition = "DATETIME COMMENT '入学时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date entranceTime;
-	@Column(nullable = false, name = "graduation_time")
+	@Column(nullable = false, name = "graduation_time", columnDefinition = "DATETIME COMMENT '毕业时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date graduationTime;
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, columnDefinition = "varchar(50) COMMENT '学院名称'")
 	private String college;
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, columnDefinition = "varchar(50) COMMENT '专业名称'")
 	private String major;
-	@Column(nullable = false, name = "curr_location", length = 100)
+	@Column(nullable = false, name = "curr_location", columnDefinition = "varchar(100) COMMENT '当前所在地'")
 	private String currLocation;
-	@Column(nullable = true, name = "industry_skill", length = 200)
+	@Column(nullable = true, name = "industry_skill", columnDefinition = "varchar(200) COMMENT '行业技能'")
 	private String industrySkill;
-	@Column(nullable = true, length = 200)
+	@Column(nullable = true, columnDefinition = "varchar(200) COMMENT '兴趣爱好'")
 	private String hobby;
 	@Lob
-	@Column(nullable = true, name = "personal_profile", columnDefinition = "TEXT")
+	@Column(nullable = true, name = "personal_profile", columnDefinition = "TEXT COMMENT '个人说明'")
 	private String personalProfile;
-	@Column(nullable = false, name = "use_status", length = 4)
-	private Integer useStatus = Integer.valueOf(0);
-	@Column(nullable = false, name = "create_time")
+	@Column(nullable = false, name = "user_status", columnDefinition = "tinyint(1) COMMENT '用户状态'")
+	private Boolean userStatus = Boolean.FALSE;
+	@Column(nullable = false, name = "create_time", columnDefinition = "DATETIME COMMENT '创建时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date createTime;
-	@Column(nullable = false, name = "update_time")
+	@Column(nullable = false, name = "update_time", columnDefinition = "DATETIME COMMENT '更新时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date updateTime;
-	@Column(nullable = false, name = "wechat_image", length = 200)
+	@Column(nullable = false, name = "wechat_image", columnDefinition = "varchar(200) COMMENT '微信头像'")
 	private String wechatImage;
-	@Column(nullable = false, name = "open_id", length = 100)
+	@Column(nullable = false, name = "open_id", columnDefinition = "varchar(100) COMMENT 'open id'")
 	private String openId = new String(" ");
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "double COMMENT '用户积分'")
 	private Double score = Double.valueOf(0);
 
 	public Integer getId() {
@@ -165,12 +166,12 @@ public class UserInfo {
 		this.personalProfile = personalProfile;
 	}
 
-	public Integer getUseStatus() {
-		return useStatus;
+	public Boolean getUserStatus() {
+		return userStatus;
 	}
 
-	public void setUseStatus(Integer useStatus) {
-		this.useStatus = useStatus;
+	public void setUserStatus(Boolean userStatus) {
+		this.userStatus = userStatus;
 	}
 
 	public Date getCreateTime() {

@@ -25,6 +25,12 @@ import com.resitory.CompanyAuthenticateResitory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * 企业认证
+ * 
+ * @author lyz
+ *
+ */
 @Api(value = "/api", tags = "Api接口")
 @RestController
 @RequestMapping("/szxyh/companyAuthenticate")

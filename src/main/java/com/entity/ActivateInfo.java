@@ -20,34 +20,35 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 @Entity
 @Table(name = "activate_info")
+@org.hibernate.annotations.Table(appliesTo = "activate_info", comment = "活动信息")
 public class ActivateInfo {
 	@Id
 	@GeneratedValue
-	@Column(name = "activate_id")
+	@Column(name = "activate_id", columnDefinition = "int(11) COMMENT '活动id'")
 	private Integer activateId;
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, columnDefinition = "varchar(100) COMMENT '活动标题'")
 	private String title;
-	@Column(nullable = false, name = "act_time")
+	@Column(nullable = false, name = "act_time", columnDefinition = "DATETIME COMMENT '活动时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
 	private Date actTime;
-	@Column(nullable = false, name = "end_time")
+	@Column(nullable = false, name = "end_time", columnDefinition = "DATETIME COMMENT '报名截止时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date endTime;
-	@Column(nullable = false, name = "act_creator", length = 50)
+	@Column(nullable = false, name = "act_creator", columnDefinition = "varchar(50) COMMENT '活动发起人'")
 	private String act_creator;
-	@Column(nullable = false, length = 300)
+	@Column(nullable = false, columnDefinition = "varchar(300) COMMENT '活动内容'")
 	private String content;
-	@Column(nullable = false, name = "participate_num", length = 11)
+	@Column(nullable = false, name = "participate_num", columnDefinition = "int(11) COMMENT '参加人数'")
 	private Integer participateNum = Integer.valueOf(0);
 	@Column(nullable = false)
 	private Double cost = Double.valueOf(0);
-	@Column(nullable = false, name = "create_time")
+	@Column(nullable = false, name = "create_time", columnDefinition = "DATETIME COMMENT '创建时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date createTime;
-	@Column(nullable = false, name = "update_time")
+	@Column(nullable = false, name = "update_time", columnDefinition = "DATETIME COMMENT '更新时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date updateTime;

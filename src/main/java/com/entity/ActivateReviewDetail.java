@@ -21,20 +21,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 @Entity
 @Table(name = "activate_review_detail")
+@org.hibernate.annotations.Table(appliesTo = "activate_review_detail", comment = "活动回顾")
 public class ActivateReviewDetail {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(nullable = false, name = "activate_id", length = 11)
+	@Column(nullable = false, name = "activate_id", columnDefinition = "int(11) COMMENT '活动id'")
 	private Integer activateId;
-	@Column(nullable = false, name = "user_id", length = 11)
+	@Column(nullable = false, name = "user_id", columnDefinition = "int(11) COMMENT '用户id'")
 	private Integer userId;
-	@Column(nullable = false, name = "user_name", length = 20)
+	@Column(nullable = false, name = "user_name", columnDefinition = "varchar(20) COMMENT '用户名称'")
 	private String userName;
 	@Lob
-	@Column(nullable = true, columnDefinition = "TEXT")
-	private Boolean comment;
-	@Column(nullable = false, name = "create_time")
+	@Column(nullable = true, columnDefinition = "TEXT COMMENT '用户评论'")
+	private String comment;
+	@Column(nullable = false, name = "create_time", columnDefinition = "DATETIME COMMENT '创建时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date createTime;
@@ -71,11 +72,11 @@ public class ActivateReviewDetail {
 		this.userName = userName;
 	}
 
-	public Boolean getComment() {
+	public String getComment() {
 		return comment;
 	}
 
-	public void setComment(Boolean comment) {
+	public void setComment(String comment) {
 		this.comment = comment;
 	}
 

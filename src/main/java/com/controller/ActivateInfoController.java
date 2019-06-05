@@ -19,14 +19,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.entity.Activate;
 import com.entity.ActivateInfo;
 import com.entity.ActivatePersonnelList;
+import com.entity.ActivateReviewDetail;
 import com.resitory.ActivateInfoResitory;
 import com.resitory.ActivatePersonnelListResitory;
+import com.resitory.ActivateReviewDetailResitory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * 活动信息
+ * 
+ * @author lyz
+ *
+ */
 @Api(value = "/api", tags = "Api接口")
 @RestController
 @RequestMapping("/szxyh/activateInfo")
@@ -35,6 +44,8 @@ public class ActivateInfoController {
 	private ActivateInfoResitory activateInfoResitory;
 	@Autowired
 	private ActivatePersonnelListResitory activatePersonnelListResitory;
+	@Autowired
+	private ActivateReviewDetailResitory activateReviewDetailResitory;
 
 	@InitBinder
 	protected void init(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -132,6 +143,59 @@ public class ActivateInfoController {
 		activatePersonnelList.setUpdateTime(new Date());
 		activatePersonnelListResitory.save(activatePersonnelList);
 		return Boolean.TRUE;
+	}
+
+	@ApiOperation(value = "活动评论", notes = "活动评论")
+	@PostMapping(value = "/addActivateReview")
+	public ActivateReviewDetail addActivateReview(@RequestParam("activateId") Integer activateId,
+			@RequestParam("userId") Integer userId, @RequestParam("userName") String userName,
+			@RequestParam("comment") String comment) {
+		ActivateReviewDetail activateReviewDetail = new ActivateReviewDetail();
+		activateReviewDetail.setActivateId(activateId);
+		activateReviewDetail.setUserId(userId);
+		activateReviewDetail.setUserName(userName);
+		activateReviewDetail.setComment(comment);
+		Date dateNow = new Date();
+		activateReviewDetail.setCreateTime(dateNow);
+		return activateReviewDetailResitory.save(activateReviewDetail);
+	}
+
+	@ApiOperation(value = "活动参与人列表", notes = "活动参与人列表")
+	@GetMapping(value = "/personnelLists/{activateId}")
+	public Activate personnelLists(@RequestParam("activateId") Integer activateId) {
+		ActivateInfo activateInfo = activateInfoResitory.findOne(activateId);
+		if (activateInfo == null) {
+			// 异常处理
+		}
+		String activateTitle = activateInfo.getTitle();
+		List<ActivatePersonnelList> lists = activatePersonnelListResitory.findByActivateId(activateId);
+		if (lists == null || lists.size() == 0) {
+			// 异常处理
+		}
+		Activate activate = new Activate();
+		activate.setActivateId(activateId);
+		activate.setActivateTitle(activateTitle);
+		activate.setActivatePersonnelLists(lists);
+		return activate;
+	}
+
+	@ApiOperation(value = "活动回顾", notes = "活动回顾")
+	@GetMapping(value = "/reviewList/{activateId}")
+	public Activate reviewList(@RequestParam("activateId") Integer activateId) {
+		ActivateInfo activateInfo = activateInfoResitory.findOne(activateId);
+		if (activateInfo == null) {
+			// 异常处理
+		}
+		String activateTitle = activateInfo.getTitle();
+		List<ActivateReviewDetail> lists = activateReviewDetailResitory.findByActivateId(activateId);
+		if (lists == null || lists.size() == 0) {
+			// 异常处理
+		}
+		Activate activate = new Activate();
+		activate.setActivateId(activateId);
+		activate.setActivateTitle(activateTitle);
+		activate.setActivateReviewDetails(lists);
+		return activate;
 	}
 
 }

@@ -19,18 +19,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.entity.AuthenticationInfo;
 import com.entity.UserInfo;
+import com.resitory.AuthenticationInfoResitory;
 import com.resitory.UserInfoResitory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * 用户信息
+ * 
+ * @author lyz
+ *
+ */
 @Api(value = "/api", tags = "Api接口")
 @RestController
 @RequestMapping("/szxyh/userInfo")
 public class UserInfoController {
 	@Autowired
 	private UserInfoResitory userInfoResitory;
+	@Autowired
+	private AuthenticationInfoResitory authenticationInfoResitory;
 
 	@InitBinder
 	protected void init(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -116,22 +126,53 @@ public class UserInfoController {
 
 	@ApiOperation(value = "用户激活", notes = "指定用户激活")
 	@PutMapping(value = "/activateUser")
-	public Boolean activateUser(@PathVariable("id") Integer id, @RequestParam("userName") String userName,
+	public Boolean activateUser(@RequestParam("userName") String userName,
 			@RequestParam("major") String major, @RequestParam("graduationTime") Date graduationTime,
 			@RequestParam("openId") String openId) {
-		// 1、判断待激活用户是否在表中，根据userName、major、graduationTime三个字段唯一识别
-		// 2、判断待激活用户是否已经激活，已经激活的不需要再激活
-		// 3、激活用户并更新openId字段
+		// 判断待激活用户是否在表中，根据userName、major、graduationTime三个字段唯一识别
+		UserInfo userInfo = userInfoResitory.findByRealNameAndMajorAndGraduationTime(userName, major, graduationTime);
+		// 判断待激活用户是否已经激活，已经激活的不需要再激活
+		if (userInfo.getUserStatus() == Boolean.TRUE) {
+			return Boolean.TRUE;
+		}
+
+		// 激活用户并更新openId字段
+		userInfo.setUserStatus(Boolean.TRUE);
+		userInfo.setOpenId(openId);
+		userInfoResitory.save(userInfo);
+
 		return true;
 	}
 
 	@ApiOperation(value = "用户认证", notes = "指定用户认证")
 	@PostMapping(value = "/certifie")
-	public void userCertifie(@RequestParam("certifiedUserId") String certifiedUserId,
-			@RequestParam("authenticatorId") String authenticatorId) {
-		// certifiedUserId被认证人Id，authenticatorId认证人Id
-		// 1、记录认证信息
-		// 2、根据certifiedUserId值查找认证信息表，看该用户是否已经到达被认证资格，若已经达到，更改状态为已认证
+	public void userCertifie(@RequestParam("certifiedUserId") Integer certifiedUserId,
+			@RequestParam("authenticatorId") Integer authenticatorId) {
+		List<AuthenticationInfo> authenticationInfoList = authenticationInfoResitory
+				.findByAuthenticatorId(authenticatorId);
+		if (authenticationInfoList.size() >= 2) {
+			return;
+		}
+		addAuthenticationInfo(certifiedUserId, authenticatorId);
+		List<AuthenticationInfo> infoList = authenticationInfoResitory.findByAuthenticatorId(authenticatorId);
+		if (infoList.size() < 2) {
+			return;
+		}
+		UserInfo userInfo = userInfoResitory.findOne(authenticatorId);
+		userInfo.setUserStatus(Boolean.TRUE);
+		userInfo.setUpdateTime(new Date());
+		userInfoResitory.save(userInfo);
+	}
+
+	@ApiOperation(value = "添加一条用户认证信息", notes = "添加一条用户认证信息")
+	@PostMapping(value = "/addAuthenticationInfo")
+	public AuthenticationInfo addAuthenticationInfo(@RequestParam("certifiedUserId") Integer certifiedUserId,
+			@RequestParam("authenticatorId") Integer authenticatorId) {
+		AuthenticationInfo authenticationInfo = new AuthenticationInfo();
+		authenticationInfo.setCertifiedUserId(certifiedUserId);
+		authenticationInfo.setAuthenticatorId(authenticatorId);
+		authenticationInfo.setCertifieTime(new Date());
+		return authenticationInfoResitory.save(authenticationInfo);
 	}
 
 }

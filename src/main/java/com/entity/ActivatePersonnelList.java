@@ -20,29 +20,30 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 @Entity
 @Table(name = "activate_personnel_list")
+@org.hibernate.annotations.Table(appliesTo = "activate_personnel_list", comment = "活动参与人列表")
 public class ActivatePersonnelList {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(nullable = false, name = "activate_id", length = 11)
+	@Column(nullable = false, name = "activate_id", columnDefinition = "int(11) COMMENT '活动id'")
 	private Integer activateId;
-	@Column(nullable = false, name = "user_id", length = 11)
+	@Column(nullable = false, name = "user_id", columnDefinition = "int(11) COMMENT '参与活动人id'")
 	private Integer userId;
-	@Column(nullable = false, name = "user_name", length = 20)
+	@Column(nullable = false, name = "user_name", columnDefinition = "varchar(20) COMMENT '参与人名称'")
 	private String userName;
-	@Column(nullable = false, name = "is_drive")
+	@Column(nullable = false, name = "is_drive", columnDefinition = "tinyint(1) COMMENT '是否开车'")
 	private Boolean isDrive = Boolean.FALSE;
-	@Column(nullable = false, name = "is_family")
+	@Column(nullable = false, name = "is_family", columnDefinition = "tinyint(1) COMMENT '是否携带家属'")
 	private Boolean isFamily = Boolean.FALSE;
-	@Column(nullable = false, name = "is_manned")
+	@Column(nullable = false, name = "is_manned", columnDefinition = "tinyint(1) COMMENT '是否可以载人'")
 	private Boolean isManned = Boolean.FALSE;
-	@Column(nullable = false, name = "is_participate")
+	@Column(nullable = false, name = "is_participate", columnDefinition = "tinyint(1) COMMENT '是否参加活动'")
 	private Boolean isParticipate = Boolean.TRUE;
-	@Column(nullable = false, name = "create_time")
+	@Column(nullable = false, name = "create_time", columnDefinition = "DATETIME COMMENT '创建时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date createTime;
-	@Column(nullable = false, name = "update_time")
+	@Column(nullable = false, name = "update_time", columnDefinition = "DATETIME COMMENT '更新时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date updateTime;
