@@ -75,6 +75,8 @@ public class UserInfoController {
 		userInfo.setIndustrySkill(industrySkill);
 		userInfo.setHobby(hobby);
 		userInfo.setPersonalProfile(personalProfile);
+		// TODO 此时的wechatImage是一个图里路径，需要根据
+		// wechatImage路径将图片下载，并保存到指定目录下，返回存放路径放入数据库
 		userInfo.setWechatImage(wechatImage);
 		if (openId == "" || openId == null) {
 			openId = " ";
