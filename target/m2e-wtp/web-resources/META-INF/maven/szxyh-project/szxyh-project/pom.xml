@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>szxyh-project</groupId>
 	<artifactId>szxyh-project</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
 	<packaging>war</packaging>
 	
 	<parent>
@@ -50,6 +50,14 @@
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-tomcat</artifactId>
     		<scope>provided</scope>
+		</dependency>
+		
+		<!-- war包部署添加servlet依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
