@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,17 +61,40 @@ public class ActivateInfoController {
 		return activateInfoResitory.findAll();
 	}
 
+	@ApiOperation(value = "取得某个用户参加的所有活动信息", notes = "取得某个用户参加的所有活动信息")
+	@GetMapping(value = "/listUserAllActivateInfo")
+	public Activate getActivateInfoByUserId(@PathVariable("userId") Integer userId) {
+		List<ActivatePersonnelList> activatePersonnelLists = activatePersonnelListResitory.findByUserId(userId);
+		Activate activate = new Activate();
+		if (activatePersonnelLists == null || activatePersonnelLists.size() == 0) {
+			return activate;
+		}
+		List<ActivateInfo> activateInfos = new ArrayList<ActivateInfo>();
+		for (ActivatePersonnelList activatePersonnelList : activatePersonnelLists) {
+			Integer activateId = activatePersonnelList.getActivateId();
+			String userName = activatePersonnelList.getUserName();
+			ActivateInfo activateInfo = activateInfoResitory.findOne(activateId);
+			activate.setUserName(userName);
+			activateInfos.add(activateInfo);
+		}
+		activate.setUserId(userId);
+		activate.setActivateInfos(activateInfos);
+		return activate;
+	}
+
 	@ApiOperation(value = "添加一个活动", notes = "添加一个活动")
 	@PostMapping(value = "/addActivate")
-	public ActivateInfo addActivate(@RequestParam("title") String title, @RequestParam("actTime") Date actTime,
+	public ActivateInfo addActivate(@RequestParam("title") String title,
+			@RequestParam("activateImage") String activateImage, @RequestParam("actTime") Date actTime,
 			@RequestParam("endTime") Date endTime, @RequestParam("act_creator") String act_creator,
 			@RequestParam("content") String content, @RequestParam("participateNum") Integer participateNum,
 			@RequestParam("cost") Double cost) {
 		ActivateInfo activateInfo = new ActivateInfo();
 		activateInfo.setTitle(title);
+		activateInfo.setActivateImage(activateImage);
 		activateInfo.setActTime(actTime);
 		activateInfo.setEndTime(endTime);
-		activateInfo.setAct_creator(act_creator);
+		activateInfo.setActCreator(act_creator);
 		activateInfo.setContent(content);
 		activateInfo.setParticipateNum(participateNum);
 		activateInfo.setCost(cost);
@@ -83,16 +107,17 @@ public class ActivateInfoController {
 	@ApiOperation(value = "更新一个活动", notes = "更新一个活动")
 	@PutMapping(value = "/updateActivate/{activateId}")
 	public ActivateInfo updateActivate(@PathVariable("activateId") Integer activateId,
-			@RequestParam("title") String title,
+			@RequestParam("title") String title, @RequestParam("activateImage") String activateImage,
 			@RequestParam("actTime") Date actTime, @RequestParam("endTime") Date endTime,
 			@RequestParam("act_creator") String act_creator, @RequestParam("content") String content,
 			@RequestParam("participateNum") Integer participateNum, @RequestParam("cost") Double cost) {
 		ActivateInfo activateInfo = new ActivateInfo();
 		activateInfo.setActivateId(activateId);
 		activateInfo.setTitle(title);
+		activateInfo.setActivateImage(activateImage);
 		activateInfo.setActTime(actTime);
 		activateInfo.setEndTime(endTime);
-		activateInfo.setAct_creator(act_creator);
+		activateInfo.setActCreator(act_creator);
 		activateInfo.setContent(content);
 		activateInfo.setParticipateNum(participateNum);
 		activateInfo.setCost(cost);

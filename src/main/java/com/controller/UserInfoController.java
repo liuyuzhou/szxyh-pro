@@ -56,7 +56,7 @@ public class UserInfoController {
 	}
 
 	@ApiOperation(value = "添加一个用户", notes = "添加一个用户")
-	@PostMapping(value = "/add")
+	@PostMapping(value = "/add", produces = { "application/json;charset=UTF-8" })
 	public UserInfo addUser(@RequestParam("realName") String realName, @RequestParam("sex") Integer sex,
 			@RequestParam("phoneNum") Long phoneNum, @RequestParam("entranceTime") Date entranceTime,
 			@RequestParam("graduationTime") Date graduationTime, @RequestParam("college") String college,
@@ -71,6 +71,7 @@ public class UserInfoController {
 		userInfo.setGraduationTime(graduationTime);
 		userInfo.setCollege(college);
 		userInfo.setMajor(major);
+		System.out.println("major is:" + major);
 		userInfo.setCurrLocation(currLocation);
 		userInfo.setIndustrySkill(industrySkill);
 		userInfo.setHobby(hobby);

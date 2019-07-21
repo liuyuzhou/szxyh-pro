@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,6 +29,8 @@ public class ActivateInfo {
 	private Integer activateId;
 	@Column(nullable = false, columnDefinition = "varchar(100) COMMENT '活动标题'")
 	private String title;
+	@Column(nullable = false, name = "activate_image", columnDefinition = "varchar(200) COMMENT '活动图片'")
+	private String activateImage;
 	@Column(nullable = false, name = "act_time", columnDefinition = "DATETIME COMMENT '活动时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
@@ -37,8 +40,9 @@ public class ActivateInfo {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
 	private Date endTime;
 	@Column(nullable = false, name = "act_creator", columnDefinition = "varchar(50) COMMENT '活动发起人'")
-	private String act_creator;
-	@Column(nullable = false, columnDefinition = "varchar(300) COMMENT '活动内容'")
+	private String actCreator;
+	@Lob
+	@Column(nullable = false, columnDefinition = "TEXT COMMENT '活动内容'")
 	private String content;
 	@Column(nullable = false, name = "participate_num", columnDefinition = "int(11) COMMENT '参加人数'")
 	private Integer participateNum = Integer.valueOf(0);
@@ -69,6 +73,14 @@ public class ActivateInfo {
 		this.title = title;
 	}
 
+	public String getActivateImage() {
+		return activateImage;
+	}
+
+	public void setActivateImage(String activateImage) {
+		this.activateImage = activateImage;
+	}
+
 	public Date getActTime() {
 		return actTime;
 	}
@@ -85,12 +97,12 @@ public class ActivateInfo {
 		this.endTime = endTime;
 	}
 
-	public String getAct_creator() {
-		return act_creator;
+	public String getActCreator() {
+		return actCreator;
 	}
 
-	public void setAct_creator(String act_creator) {
-		this.act_creator = act_creator;
+	public void setActCreator(String actCreator) {
+		this.actCreator = actCreator;
 	}
 
 	public String getContent() {

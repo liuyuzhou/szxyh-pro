@@ -8,5 +8,7 @@ import com.entity.ActivatePersonnelList;
 
 public interface ActivatePersonnelListResitory extends JpaRepository<ActivatePersonnelList, Integer> {
 	public List<ActivatePersonnelList> findByActivateId(Integer activateId);
+
+	public List<ActivatePersonnelList> findByUserId(Integer userId);
 }
 
